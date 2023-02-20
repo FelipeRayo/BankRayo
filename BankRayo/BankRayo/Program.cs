@@ -1,11 +1,16 @@
-using BankRayo.Models;
+using BankRayo.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 // Add services to the container.
+builder.Services.AddTransient<IClientRepository, ClientRepository>();
+builder.Services.AddTransient<IAccountRepository, AccountRepository>();
+builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
 builder.Services.AddDbContext<BankRayoDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("BankRayoContext")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BankRayoContext")), ServiceLifetime.Transient);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
