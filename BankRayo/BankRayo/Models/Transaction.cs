@@ -3,17 +3,21 @@
 namespace BankRayo.Models
 {
     [Serializable]
-    public class Transactions
+    public class Transaction
     {
         [Key]
         public int Id { get; set; }
+
+        public int NumberAccount { get; set; }
 
         public DateTime Date { get; set; }
 
         public string Type { get; set; }
 
-        public float Vallue { get; set; }
+        public decimal Value { get; set; }
 
-        public float Balance { get; set; }
+        public decimal Balance { get; set; }
+
+        public bool State { get; set; }
     }
 }

@@ -8,10 +8,13 @@ namespace BankRayo.Models
         [Key]
         public int Number { get; set; }
 
+        [Required]
         public string Type { get; set; }
 
-        public float InitialBalance { get; set; }
+        public decimal InitialBalance { get; set; }
 
         public bool State { get; set; }
+
+        public int IdClient { get; set; }
     }
 }
