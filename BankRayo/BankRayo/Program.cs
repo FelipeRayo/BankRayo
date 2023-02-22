@@ -1,4 +1,5 @@
 using BankRayo.Repository;
+using BankRayo.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
