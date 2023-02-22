@@ -1,6 +1,6 @@
-﻿using BankRayo.Models;
+﻿using BankRayo.Entities.Models;
 
-namespace BankRayo.Repository
+namespace BankRayo.Repository.Interfaces
 {
     public interface IAccountRepository
     {

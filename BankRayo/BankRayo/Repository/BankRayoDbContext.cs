@@ -1,4 +1,4 @@
-﻿using BankRayo.Models;
+﻿using BankRayo.Entities.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankRayo.Repository
@@ -11,7 +11,6 @@ namespace BankRayo.Repository
         }
 
         public DbSet<Person> Person { get; set; }
-        public DbSet<Client> Client { get; set; }
         public DbSet<Account> Account { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
     }

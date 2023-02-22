@@ -1,4 +1,6 @@
-﻿using BankRayo.Models;
+﻿using BankRayo.Entities.BusinessEntities;
+using BankRayo.Entities.Models;
+using BankRayo.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankRayo.Repository
@@ -14,27 +16,37 @@ namespace BankRayo.Repository
 
         public async Task<IEnumerable<Client>> GetClientsAsync()
         {
-            //return await (from person in _bankRayoDbContext.Persons
-            //              join client in _bankRayoDbContext.Clients
-            //              on person.Id equals client.ClientId
-            //              select new Client
-            //              {
-            //                  Id = person.Id,
-            //                  Name = person.Name,
-            //                  Address = person.Address,
-            //                  Age = person.Age,
-            //                  Gender = person.Gender,
-            //                  NumberPhone = person.NumberPhone,
-            //                  Password = client.Password,
-            //                  ClientId = client.ClientId,
-            //                  State = client.State,
-            //              }).ToListAsync();
-            return await _bankRayoDbContext.Person.OfType<Client>().ToListAsync();
+            return await (from person in _bankRayoDbContext.Person
+                          select new Client
+                          {
+                              Id = person.Id,
+                              Name = person.Name,
+                              Address = person.Address,
+                              Age = person.Age,
+                              Gender = person.Gender,
+                              NumberPhone = person.NumberPhone,
+                              Password = person.Password,
+                              ClientId = person.ClientId,
+                              State = person.State,
+                          }).ToListAsync();
         }
 
         public async Task<Client> GetClientAsync(int clientId)
         {
-            var Client = await _bankRayoDbContext.Person.OfType<Client>().Where(client => client.ClientId == clientId).FirstOrDefaultAsync();
+            var Client = await (from person in _bankRayoDbContext.Person
+                                where person.ClientId == clientId
+                                select new Client
+                                {
+                                    Id = person.Id,
+                                    Name = person.Name,
+                                    Address = person.Address,
+                                    Age = person.Age,
+                                    Gender = person.Gender,
+                                    NumberPhone = person.NumberPhone,
+                                    Password = person.Password,
+                                    ClientId = person.ClientId,
+                                    State = person.State,
+                                }).FirstOrDefaultAsync();
 
 
             if (Client == null)
@@ -47,49 +59,58 @@ namespace BankRayo.Repository
 
         public async Task<Client> CreateClientAsync(Client client)
         {
-            //var person = new Person
-            //{
-            //    Name = client.Name,
-            //    Address = client.Address,
-            //    Age = client.Age,
-            //    Gender = client.Gender,
-            //    NumberPhone = client.NumberPhone
-            //};
-
-            //_bankRayoDbContext.Persons.Add(person);
-            //await _bankRayoDbContext.SaveChangesAsync();
-
-            var _client = new Client
+            var person = new Entities.Models.Person
             {
+                ClientId = client.ClientId,
                 Name = client.Name,
-                Address = client.Address,
-                Age = client.Age,
                 Gender = client.Gender,
+                Age = client.Age,
+                Address = client.Address,
                 NumberPhone = client.NumberPhone,
                 Password = client.Password,
-                State = client.State,
-                ClientId = client.ClientId,
+                State = client.State
             };
 
-            _bankRayoDbContext.Client.Add(_client);
+            _bankRayoDbContext.Person.Add(person);
             await _bankRayoDbContext.SaveChangesAsync();
 
             return await GetClientAsync(client.ClientId);
-
         }
 
         public async Task<Client> UpdateClientAsync(Client client)
         {
-            _bankRayoDbContext.Entry(client).State = EntityState.Modified;
-            await _bankRayoDbContext.SaveChangesAsync();
+            using (var db = _bankRayoDbContext)
+            {
+                var _client = await (from Client in db.Person
+                                     where Client.ClientId == client.ClientId
+                                     select Client).FirstOrDefaultAsync();
+
+                _client.Name = client.Name;
+                _client.Gender = client.Gender;
+                _client.Age = client.Age;
+                _client.Address = client.Address;
+                _client.NumberPhone = client.NumberPhone;
+                _client.Password = client.Password;
+                _client.State = false;
+
+                await db.SaveChangesAsync();
+            }
 
             return await GetClientAsync(client.ClientId);
         }
 
-        public async Task DeleteClientAsync(Client Client)
+        public async Task DeleteClientAsync(Client client)
         {
-            _bankRayoDbContext.Remove(Client);
-            await _bankRayoDbContext.SaveChangesAsync();
+            using (var db = _bankRayoDbContext)
+            {
+                var _client = await (from Client in db.Person
+                                      where Client.ClientId == client.ClientId
+                                      select Client).FirstOrDefaultAsync();
+
+                _client.State = false;
+
+                await db.SaveChangesAsync();
+            }
         }
     }
 }

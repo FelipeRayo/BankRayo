@@ -1,4 +1,5 @@
-﻿using BankRayo.Models;
+﻿using BankRayo.Entities.Models;
+using BankRayo.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankRayo.Repository
@@ -17,9 +18,9 @@ namespace BankRayo.Repository
             return await _bankRayoDbContext.Account.ToListAsync();
         }
 
-        public async Task<Account> GetAccountAsync(int Number)
+        public async Task<Account> GetAccountAsync(int number)
         {
-            var Account = await _bankRayoDbContext.Account.Where(Account => Account.Number == Number).FirstOrDefaultAsync();
+            var Account = await _bankRayoDbContext.Account.Where(Account => Account.Number == number).FirstOrDefaultAsync();
 
             if (Account == null)
             {
@@ -29,20 +30,20 @@ namespace BankRayo.Repository
             return Account;
         }
 
-        public async Task<Account> CreateAccountAsync(Account Account)
+        public async Task<Account> CreateAccountAsync(Account account)
         {
-            _bankRayoDbContext.Account.Add(Account);
+            _bankRayoDbContext.Account.Add(account);
             await _bankRayoDbContext.SaveChangesAsync();
 
-            if (Account.InitialBalance > 0)
+            if (account.InitialBalance > 0)
             {
                 var transaction = new Transaction
                 {
-                    NumberAccount = Account.Number,
+                    NumberAccount = account.Number,
                     Date = DateTime.Now,
                     Type = "Deposito",
-                    Value = Account.InitialBalance,
-                    Balance = Account.InitialBalance,
+                    Value = account.InitialBalance,
+                    Balance = account.InitialBalance,
                     State = true
                 };
 
@@ -50,25 +51,32 @@ namespace BankRayo.Repository
                 await _bankRayoDbContext.SaveChangesAsync();
             }
 
-            return await GetAccountAsync(Account.Number);
+            return await GetAccountAsync(account.Number);
         }
 
-        public async Task<Account> UpdateAccountAsync(Account Account)
+        public async Task<Account> UpdateAccountAsync(Account account)
         {
-            _bankRayoDbContext.Entry(Account).State = EntityState.Modified;
-            await _bankRayoDbContext.SaveChangesAsync();
-
-            return await GetAccountAsync(Account.Number);
-        }
-
-        public async Task DeleteAccountAsync(Account Account)
-        {
-
             using (var db = _bankRayoDbContext)
             {
-                var _account = await (from account in db.Account
-                                      where account.Number == Account.Number
-                                      select account).FirstOrDefaultAsync();
+                var _account = await (from Account in db.Account
+                                      where Account.Number == account.Number
+                                      select Account).FirstOrDefaultAsync();
+
+                _account.State = false;
+
+                await db.SaveChangesAsync();
+            }
+
+            return await GetAccountAsync(account.Number);
+        }
+
+        public async Task DeleteAccountAsync(Account account)
+        {
+            using (var db = _bankRayoDbContext)
+            {
+                var _account = await (from Account in db.Account
+                                      where Account.Number == account.Number
+                                      select Account).FirstOrDefaultAsync();
 
                 _account.State = false; 
                 

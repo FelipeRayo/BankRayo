@@ -1,6 +1,7 @@
-﻿using BankRayo.Models;
+﻿using BankRayo.Entities.BusinessEntities;
+using BankRayo.Entities.Models;
 
-namespace BankRayo.Repository
+namespace BankRayo.Repository.Interfaces
 {
     public interface ITransactionRepository
     {

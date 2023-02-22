@@ -1,8 +1,7 @@
-﻿using BankRayo.Models;
-using BankRayo.Resources;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+﻿using BankRayo.Entities.BusinessEntities;
+using BankRayo.Entities.Models;
+using BankRayo.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BankRayo.Repository
 {
@@ -17,7 +16,7 @@ namespace BankRayo.Repository
 
         public async Task<IEnumerable<FinancialReport>> GetFinancialReport(DateTime start, DateTime end, int clientId)
         {
-            return await (from client in _bankRayoDbContext.Client
+            return await (from client in _bankRayoDbContext.Person
                           join account in _bankRayoDbContext.Account
                           on client.ClientId equals account.IdClient
                           join transaction in _bankRayoDbContext.Transactions
@@ -38,7 +37,7 @@ namespace BankRayo.Repository
                           }).ToListAsync();
         }
 
-        private decimal FormatTransaction(string typeTransaction, decimal value)
+        private static decimal FormatTransaction(string typeTransaction, decimal value)
         {
             switch (typeTransaction)
             {
@@ -59,9 +58,9 @@ namespace BankRayo.Repository
             return await _bankRayoDbContext.Transactions.ToListAsync();
         }
 
-        public async Task<Transaction> GetTransactionAsync(int TransactionId)
+        public async Task<Transaction> GetTransactionAsync(int transactionId)
         {
-            var Transaction = await _bankRayoDbContext.Transactions.Where(Transaction => Transaction.Id == TransactionId).FirstOrDefaultAsync();
+            var Transaction = await _bankRayoDbContext.Transactions.Where(Transaction => Transaction.Id == transactionId).FirstOrDefaultAsync();
 
             if (Transaction == null)
             {
@@ -71,55 +70,76 @@ namespace BankRayo.Repository
             return Transaction;
         }
 
-        private async Task<decimal> GetLatestBalance(int NumberAccount)
+        private async Task<decimal> GetLatestBalance(int numberAccount)
         {
-            var query= (from transaction in _bankRayoDbContext.Transactions
-                          where transaction.NumberAccount == NumberAccount
-                          orderby transaction.Date descending
-                          select transaction.Balance);
+            var query = (from transaction in _bankRayoDbContext.Transactions
+                         where transaction.NumberAccount == numberAccount
+                         orderby transaction.Date descending
+                         select transaction.Balance);
 
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<Transaction> CreateTransactionAsync(Transaction Transaction)
+        public async Task<Transaction> CreateTransactionAsync(Transaction transaction)
         {
-            switch (Transaction.Type)
+            switch (transaction.Type)
             {
                 case "Retiro":
-                    var LastBalance = await GetLatestBalance(Transaction.NumberAccount);
-                    if(LastBalance < Transaction.Value)
+                    var LastBalance = await GetLatestBalance(transaction.NumberAccount);
+                    if (LastBalance < transaction.Value)
                     {
                         throw new ArgumentOutOfRangeException();
                     }
                     break;
 
                 case "Deposito":
-                    Transaction.Date = DateTime.Now;
-                    _bankRayoDbContext.Transactions.Add(Transaction);
+                    transaction.Date = DateTime.Now;
+                    _bankRayoDbContext.Transactions.Add(transaction);
                     break;
 
-                default: 
+                default:
                     throw new ArgumentException();
             }
 
             await _bankRayoDbContext.SaveChangesAsync();
 
 
-            return await GetTransactionAsync(Transaction.Id);
+            return await GetTransactionAsync(transaction.Id);
         }
 
-        public async Task<Transaction> UpdateTransactionAsync(Transaction Transaction)
+        public async Task<Transaction> UpdateTransactionAsync(Transaction transaction)
         {
-            _bankRayoDbContext.Entry(Transaction).State = EntityState.Modified;
-            await _bankRayoDbContext.SaveChangesAsync();
+            using (var db = _bankRayoDbContext)
+            {
+                var _transaction = await (from Transaction in db.Transactions
+                                          where Transaction.Id == transaction.Id
+                                          select Transaction).FirstOrDefaultAsync();
 
-            return await GetTransactionAsync(Transaction.Id);
+                _transaction.Value = transaction.Value;
+                _transaction.Date = transaction.Date;
+                _transaction.Type = transaction.Type;
+                _transaction.Balance = transaction.Balance;
+                _transaction.NumberAccount = transaction.NumberAccount;
+                _transaction.State = false;
+
+                await db.SaveChangesAsync();
+            }
+
+            return await GetTransactionAsync(transaction.Id);
         }
 
-        public async Task DeleteTransactionAsync(Transaction Transaction)
+        public async Task DeleteTransactionAsync(Transaction transaction)
         {
-            _bankRayoDbContext.Remove(Transaction);
-            await _bankRayoDbContext.SaveChangesAsync();
+            using (var db = _bankRayoDbContext)
+            {
+                var _transaction = await (from Transaction in db.Transactions
+                                     where Transaction.Id == transaction.Id
+                                     select Transaction).FirstOrDefaultAsync();
+
+                _transaction.State = false;
+
+                await db.SaveChangesAsync();
+            }
         }
     }
 }
