@@ -1,156 +1,393 @@
 {
 	"info": {
-		"_postman_id": "2ee7fcbb-df71-47df-8ad7-4f7545bf6636",
+		"_postman_id": "909f5ab1-0ed4-49fd-aa0d-71671b4ec6de",
 		"name": "BankRayo",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Crear Cuenta",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"number\": 478758,\r\n  \"type\": \"Ahorros\",\r\n  \"initialBalance\": 2000,\r\n  \"state\": true,\r\n  \"idClient\": 433443\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:7127/api/Account",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "7127",
-					"path": [
-						"api",
-						"Account"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Consultar cuentas",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://localhost:7127/api/Account",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "7127",
-					"path": [
-						"api",
-						"Account"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Actualizar cuenta",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"number\": 478758,\r\n  \"type\": \"Ahorroos\",\r\n  \"initialBalance\": 2000,\r\n  \"state\": true,\r\n  \"idClient\": 433443\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:7127/api/Account/478758",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "7127",
-					"path": [
-						"api",
-						"Account",
-						"478758"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Borrar cuenta",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "https://localhost:7127/api/Account/478758",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "7127",
-					"path": [
-						"api",
-						"Account",
-						"478758"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Crear Transacción",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"numberAccount\": 478758,\r\n  \"type\": \"Retiro\",\r\n  \"value\": 575\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:7127/api/Transaction/reportes?start=\"2023-02-10 06:49:38\"&end=\"2023-02-20 06:49:38\"&clientId=478758",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "7127",
-					"path": [
-						"api",
-						"Transaction",
-						"reportes"
-					],
-					"query": [
-						{
-							"key": "start",
-							"value": "\"2023-02-10 06:49:38\""
+			"name": "Clientes",
+			"item": [
+				{
+					"name": "Crear Cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Marianela Montalvo\",\r\n    \"gender\": \"Femenino\",\r\n    \"age\": 23,\r\n    \"address\": \"Amazonas y NNUU\",\r\n    \"numberPhone\": \"097548965\",\r\n    \"clientId\": 32333224,\r\n    \"password\": \"5678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
-						{
-							"key": "end",
-							"value": "\"2023-02-20 06:49:38\""
-						},
-						{
-							"key": "clientId",
-							"value": "478758"
+						"url": {
+							"raw": "https://bank-rayo.azurewebsites.net/api/Client",
+							"protocol": "https",
+							"host": [
+								"bank-rayo",
+								"azurewebsites",
+								"net"
+							],
+							"path": [
+								"api",
+								"Client"
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar cliente",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"number\": 478758,\r\n  \"type\": \"Ahorroos\",\r\n  \"initialBalance\": 2000,\r\n  \"state\": true,\r\n  \"idClient\": 433443\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://bank-rayo.azurewebsites.net/api/Account/433443",
+							"protocol": "https",
+							"host": [
+								"bank-rayo",
+								"azurewebsites",
+								"net"
+							],
+							"path": [
+								"api",
+								"Account",
+								"433443"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar cliente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://bank-rayo.azurewebsites.net/api/Account/433443",
+							"protocol": "https",
+							"host": [
+								"bank-rayo",
+								"azurewebsites",
+								"net"
+							],
+							"path": [
+								"api",
+								"Account",
+								"433443"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://bank-rayo.azurewebsites.net/api/Client",
+							"protocol": "https",
+							"host": [
+								"bank-rayo",
+								"azurewebsites",
+								"net"
+							],
+							"path": [
+								"api",
+								"Client"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "Cuentas",
+			"item": [
+				{
+					"name": "Crear Cuenta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"number\": 478758,\r\n  \"type\": \"Ahorros\",\r\n  \"initialBalance\": 2000,\r\n  \"state\": true,\r\n  \"idClient\": 433443\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://bank-rayo.azurewebsites.net/api/Account",
+							"protocol": "https",
+							"host": [
+								"bank-rayo",
+								"azurewebsites",
+								"net"
+							],
+							"path": [
+								"api",
+								"Account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar cuentas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://bank-rayo.azurewebsites.net/api/Account",
+							"protocol": "https",
+							"host": [
+								"bank-rayo",
+								"azurewebsites",
+								"net"
+							],
+							"path": [
+								"api",
+								"Account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar cuenta",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"number\": 478758,\r\n  \"type\": \"Ahorroos\",\r\n  \"initialBalance\": 2000,\r\n  \"state\": true,\r\n  \"idClient\": 433443\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://bank-rayo.azurewebsites.net/api/Account/433443\n",
+							"protocol": "https",
+							"host": [
+								"bank-rayo",
+								"azurewebsites",
+								"net"
+							],
+							"path": [
+								"api",
+								"Account",
+								"433443\n"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar cuenta",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://bank-rayo.azurewebsites.net/api/Account/478758",
+							"protocol": "https",
+							"host": [
+								"bank-rayo",
+								"azurewebsites",
+								"net"
+							],
+							"path": [
+								"api",
+								"Account",
+								"478758"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transacciones",
+			"item": [
+				{
+					"name": "Crear transacción",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"number\": 478758,\r\n  \"type\": \"Ahorros\",\r\n  \"initialBalance\": 2000,\r\n  \"state\": true,\r\n  \"idClient\": 433443\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://bank-rayo.azurewebsites.net/api/Transaction",
+							"protocol": "https",
+							"host": [
+								"bank-rayo",
+								"azurewebsites",
+								"net"
+							],
+							"path": [
+								"api",
+								"Transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consultar reporte",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"numberAccount\": 478758,\r\n  \"type\": \"Retiro\",\r\n  \"value\": 575\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://bank-rayo.azurewebsites.net/api/Transaction/reportes?start=10/02/2023 06:49:38&end=22/02/2023 06:49:38&clientId=433443",
+							"protocol": "https",
+							"host": [
+								"bank-rayo",
+								"azurewebsites",
+								"net"
+							],
+							"path": [
+								"api",
+								"Transaction",
+								"reportes"
+							],
+							"query": [
+								{
+									"key": "start",
+									"value": "10/02/2023 06:49:38"
+								},
+								{
+									"key": "end",
+									"value": "22/02/2023 06:49:38"
+								},
+								{
+									"key": "clientId",
+									"value": "433443"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar transacción",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://bank-rayo.azurewebsites.net/api/Account",
+							"protocol": "https",
+							"host": [
+								"bank-rayo",
+								"azurewebsites",
+								"net"
+							],
+							"path": [
+								"api",
+								"Account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar transacción",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"number\": 478758,\r\n  \"type\": \"Ahorroos\",\r\n  \"initialBalance\": 2000,\r\n  \"state\": true,\r\n  \"idClient\": 433443\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://bank-rayo.azurewebsites.net/api/Account/478758",
+							"protocol": "https",
+							"host": [
+								"bank-rayo",
+								"azurewebsites",
+								"net"
+							],
+							"path": [
+								"api",
+								"Account",
+								"478758"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar transacción",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://bank-rayo.azurewebsites.net/api/Account/478758",
+							"protocol": "https",
+							"host": [
+								"bank-rayo",
+								"azurewebsites",
+								"net"
+							],
+							"path": [
+								"api",
+								"Account",
+								"478758"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
