@@ -1,11 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BankRayo.Models
+﻿namespace BankRayo.Entities.BusinessEntities
 {
     [Serializable]
     public class Person
     {
-        [Key]
         public int Id { get; set; }
 
         public string? Name { get; set; }
@@ -17,5 +14,6 @@ namespace BankRayo.Models
         public string Address { get; set; }
 
         public string NumberPhone { get; set; }
+
     }
 }

@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace BankRayo.Models
+﻿namespace BankRayo.Entities.BusinessEntities
 {
     [Serializable]
     public class Client : Person

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BankRayo.Models
+namespace BankRayo.Entities.Models
 {
     [Serializable]
     public class Transaction

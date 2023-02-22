@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BankRayo.Models
+namespace BankRayo.Entities.Models
 {
-    [Serializable]
+    [Table("Account")]
     public class Account
     {
         [Key]
         public int Number { get; set; }
 
-        [Required]
         public string Type { get; set; }
 
         public decimal InitialBalance { get; set; }
