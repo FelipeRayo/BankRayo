@@ -1,5 +1,5 @@
-﻿using BankRayo.Models;
-using BankRayo.Repository;
+﻿using BankRayo.Entities.Models;
+using BankRayo.Repository.Interfaces;
 using BankRayo.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
@@ -16,7 +16,7 @@ namespace BankRayo.Controllers
         private readonly IAccountRepository _accountRespository;
         private readonly ILogger _logger;
 
-        public AccountController(IAccountRepository accounttRespository, ILogger<ClientController> logger)
+        public AccountController(IAccountRepository accounttRespository, ILogger<AccountController> logger)
         {
             _accountRespository = accounttRespository;
             _logger = logger;

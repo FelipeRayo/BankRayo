@@ -1,5 +1,5 @@
-﻿using BankRayo.Models;
-using BankRayo.Repository;
+﻿using BankRayo.Entities.BusinessEntities;
+using BankRayo.Repository.Interfaces;
 using BankRayo.Resources;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;

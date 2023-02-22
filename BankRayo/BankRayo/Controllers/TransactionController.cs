@@ -1,5 +1,6 @@
-﻿using BankRayo.Models;
-using BankRayo.Repository;
+﻿using BankRayo.Entities.BusinessEntities;
+using BankRayo.Entities.Models;
+using BankRayo.Repository.Interfaces;
 using BankRayo.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
@@ -17,7 +18,7 @@ namespace BankRayo.Controllers
         private readonly ITransactionRepository _transactionRespository;
         private readonly ILogger _logger;
 
-        public TransactionController(ITransactionRepository transactionRespository, ILogger<ClientController> logger)
+        public TransactionController(ITransactionRepository transactionRespository, ILogger<TransactionController> logger)
         {
             _transactionRespository = transactionRespository;
             _logger = logger;
@@ -70,8 +71,8 @@ namespace BankRayo.Controllers
         {
             try
             {
-                if (!DateTime.TryParseExact(start, "MM-dd-yyyy hh::mm:tt", new CultureInfo("es-CO"), DateTimeStyles.None, out DateTime startDate) 
-                    || !DateTime.TryParseExact(end, "MM-dd-yyyy hh::mm:tt", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endDate) 
+                if (!DateTime.TryParseExact(start, "dd/MM/yyyy HH:mm:ss", new CultureInfo("es-CO"), DateTimeStyles.None, out DateTime startDate) 
+                    || !DateTime.TryParseExact(end, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endDate) 
                     || startDate >= endDate || clientId == 0)
                 {
                     return BadRequest(Messages.TransactionIdNotValid);
